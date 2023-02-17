@@ -33,10 +33,10 @@ for dig in digs:
     signals = np.concatenate([bases,bases],axis=1)
 
     # cross correlation
-    NR_seq_bases = []
-    NR_seq_signs = []
-    R_seq_bases = []
-    R_seq_signs = []
+    ND_seq_bases = []
+    ND_seq_signs = []
+    D_seq_bases = []
+    D_seq_signs = []
     for base in bases:
         for signal in signals:
             if str(base) == str(signal[:dig]):
@@ -44,26 +44,26 @@ for dig in digs:
             else:
                 cross_cor = np.sum(becmm.any_base_analysis_1D(signal, base))            
                 if cross_cor == 0:
-                    NR_seq_bases.append(base)
-                    NR_seq_signs.append(signal[:dig])
+                    ND_seq_bases.append(base)
+                    ND_seq_signs.append(signal[:dig])
                 else:
-                    R_seq_bases.append(base)
-                    R_seq_signs.append(signal)
+                    D_seq_bases.append(base)
+                    D_seq_signs.append(signal)
     
     # print and save txt
     f = open('ND_seq_dig'+str(dig).zfill(3)+'.txt','w')
     f.write('base,signal\n')
-    for NR_seq_base,NR_seq_sign in zip(NR_seq_bases,NR_seq_signs):
-        print('base:'+str(NR_seq_base)+' sign:'+str(NR_seq_sign))
-        f.write(str(NR_seq_base)+','+str(NR_seq_sign)+'\n')
+    for ND_seq_base,ND_seq_sign in zip(ND_seq_bases,ND_seq_signs):
+        print('base:'+str(ND_seq_base)+' sign:'+str(ND_seq_sign))
+        f.write(str(ND_seq_base)+','+str(ND_seq_sign)+'\n')
     f.close()
     
     # check rotate
-    for R_seq_base,R_seq_sign in zip(R_seq_bases,R_seq_signs):
-        if str(R_seq_base)[1:-1] in str(R_seq_sign)[1:-1]:
+    for D_seq_base,D_seq_sign in zip(D_seq_bases,D_seq_signs):
+        if str(D_seq_base)[1:-1] in str(D_seq_sign)[1:-1]:
             print('true')
-            print('base:'+str(R_seq_base)+' signal:'+str(R_seq_sign))
+            print('base:'+str(D_seq_base)+' signal:'+str(D_seq_sign))
         else:
             print('false')
-            print('base:'+str(R_seq_base)+' signal:'+str(R_seq_sign))
+            print('base:'+str(D_seq_base)+' signal:'+str(D_seq_sign))
     
