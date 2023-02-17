@@ -8,7 +8,7 @@ MIT License
 import base_extract_correlation_minimum_method as becmm
 import numpy as np
 
-digs = np.arange(4,17)
+digs = np.arange(8,17)
 
 for dig in digs:
     print('dig:'+str(dig))
