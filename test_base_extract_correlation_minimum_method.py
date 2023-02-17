@@ -67,7 +67,7 @@ base = [[1,0,0,1],
         [0,0,0,0],
         [0,0,0,0],
         [1,0,0,1]]
-base_ana = becmm.any_base_analysis_2D(test_image, base)
+base_ana = becmm.any_base_analysis4img(test_image, base)
 
 # embed for plot
 freq_nums_emb4plot = np.zeros_like(test_image,dtype='f')
