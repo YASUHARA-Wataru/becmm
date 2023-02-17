@@ -51,7 +51,7 @@ for dig in digs:
                     R_seq_signs.append(signal)
     
     # print and save txt
-    f = open('NR_seq_dig'+str(dig).zfill(3)+'.txt','w')
+    f = open('ND_seq_dig'+str(dig).zfill(3)+'.txt','w')
     f.write('base,signal\n')
     for NR_seq_base,NR_seq_sign in zip(NR_seq_bases,NR_seq_signs):
         print('base:'+str(NR_seq_base)+' sign:'+str(NR_seq_sign))
