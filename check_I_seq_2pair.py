@@ -50,7 +50,7 @@ for dig in digs:
                     I_seq_signs.append(signal[:dig])
     
     # print and save txt
-    f = open('I_seq_dig'+str(dig).zfill(3)+'.txt','w')
+    f = open('I_seq_2pair_dig'+str(dig).zfill(3)+'.txt','w')
     f.write('base,signal\n')
     for I_seq_base,I_seq_sign in zip(I_seq_bases,I_seq_signs):
         print('base:'+str(I_seq_base)+' sign:'+str(I_seq_sign))
