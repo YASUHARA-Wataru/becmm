@@ -10,7 +10,7 @@ import numpy as np
 import itertools
 
 digs = range(8,9)
-pair_nums= range(5,6)
+pair_nums= range(4,5)
 
 for pair_num in pair_nums:
     print('pair num:'+str(pair_num))
@@ -27,7 +27,7 @@ for pair_num in pair_nums:
                 
         del remove_numbers
         # get all base patterns
-        pair_bases_num = np.array(list(itertools.combinations(numbers,pair_num)),dtype=np.uint32)
+        pair_bases_num = list(itertools.combinations(numbers,pair_num))
         #pair_bases_num = list(itertools.combinations(numbers,pair_num))
 
         del numbers
@@ -38,7 +38,7 @@ for pair_num in pair_nums:
         for i in range(1,pair_num):
             f.write(',base'+str(i+1))
         f.write('\n')
-        print('calc data length:'+str(pair_bases_num))
+        print('calc data length:'+str(len(pair_bases_num)))
         pair_bases_sig = []
         for i,pair_base in enumerate(pair_bases_num):
             print("\r"+str(i),end="")
@@ -73,6 +73,7 @@ for pair_num in pair_nums:
                         continue
                     f.write(','+str(a_base))
                 f.write('\n')
-        
+        f.close()
+
 
         
