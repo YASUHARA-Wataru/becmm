@@ -10,7 +10,7 @@ import numpy as np
 import itertools
 
 digs = range(8,9)
-pair_nums= range(4)
+pair_nums= range(4,5)
 
 for pair_num in pair_nums:
     print('pair num:'+str(pair_num))
@@ -27,7 +27,8 @@ for pair_num in pair_nums:
                 
         del remove_numbers
         # get all base patterns
-        pair_bases_num = np.array(list(itertools.combinations(numbers,pair_num)))
+        #pair_bases_num = np.array(list(itertools.combinations(numbers,pair_num)))
+        pair_bases_num = itertools.combinations(numbers,pair_num)
 
         del numbers
         # transform
@@ -36,15 +37,15 @@ for pair_num in pair_nums:
             pair_bases_sig_temp = []
             for base in pair_base:
                 seq = '{:b}'.format(base).zfill(dig)
-                base_temp = np.zeros(dig)
+                base_temp = np.zeros(dig,dtype=np.uint8)
                 for i,bit in enumerate(seq):
-                    base_temp[i]=int(bit)
+                    base_temp[i]=bit
 
                 pair_bases_sig_temp.append(base_temp)
 
             pair_bases_sig.append(np.array(pair_bases_sig_temp))
         
-        pair_bases_sig = np.array(pair_bases_sig)
+        pair_bases_sig = np.array(pair_bases_sig,dtype=np.uint8)
 
         del pair_bases_num,pair_bases_sig_temp
         # calc correlation
@@ -56,7 +57,7 @@ for pair_num in pair_nums:
             auto_cor_flag = np.zeros(pair_num)
             cross_cor_flag = np.zeros(pair_num)
             for i,a_base in enumerate(pair_base):
-                cross_cor_sig = becmm.any_base_analysis_1D(cor_signal, a_base)
+                cross_cor_sig = becmm.any_base_analysis4I_seq(cor_signal, a_base)
            
                 auto_cor_flag[i] = cross_cor_sig[0] == 1
                 cross_cor_flag[i] = np.sum(cross_cor_sig[1:]) < 0.001

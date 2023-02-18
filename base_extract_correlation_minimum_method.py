@@ -294,6 +294,69 @@ def any_base_analysis_1D(data,base):
         cor_result[i] = np.min(data_cut[calc_index]/base[calc_index])
         
     return cor_result
+
+def any_base_analysis4I_seq(data,base):
+    """
+    Parameters
+    ----------
+    data : TYPE
+        1D-array Data
+    base : TYPE
+        1D-array base
+
+    Raises
+    ------
+    Exception
+        If Data is not 1D-array, raises error
+        If Data contains negative value, raises error
+        If base contains negative value, raises error
+        If base is lager than Data, raises error
+        If base not zero value absoulte min is not 1 , raises error
+        If base do not contain more than 2 values without 0 , raises error
+        cause there is no pattern.
+
+    Returns
+    -------
+    cor_result : TYPE
+        DESCRIPTION.
+
+    """
+    data = np.array(data)
+    base = np.array(base)
+
+
+    if data.flatten().shape[0] != len(list(data)) :
+        raise Exception('data is not 1D array.')
+
+    if np.min(data) < 0:
+        raise Exception('data can\'t contain negative values.')
+
+    if np.min(base) < 0:
+        raise Exception('base can\'t contain negative values.')
+
+    if np.min(np.abs(base)[np.abs(base) > 0]) != 1:
+        raise Exception('base not zero value absolute min must be 1.')
+        
+    if np.sum(np.abs(base) > 0) < 2:
+        raise Exception('base must contain 2 values which is not 0.')
+
+    data_num = data.shape[0]
+    base_num = base.shape[0]
+    
+    if data_num < base_num:
+        raise Exception('base is too large.')
+
+    if 1 not in np.abs(base):
+        raise Exception('base must contain 1.')
+    
+    cor_result = np.zeros(data_num - base_num,dtype=np.uint8)
+    for i in range(data_num-base_num):
+        data_cut = data[i:i+base_num]
+        calc_index = base > 0.001
+        cor_result[i] = np.min(data_cut[calc_index]/base[calc_index])
+        
+    return cor_result
+
             
 def any_base_analysis_2D(data,base):
     """
