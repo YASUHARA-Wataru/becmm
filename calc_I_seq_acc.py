@@ -43,7 +43,7 @@ for pair_num in pair_nums:
 
                 pair_bases_sig_temp.append(base_temp)
 
-            pair_bases_sig.append(np.array(pair_bases_sig_temp))
+            pair_bases_sig.append(np.array(pair_bases_sig_temp,dtype=np.uint8))
         
         pair_bases_sig = np.array(pair_bases_sig,dtype=np.uint8)
 

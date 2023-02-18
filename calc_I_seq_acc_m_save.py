@@ -10,7 +10,7 @@ import numpy as np
 import itertools
 
 digs = range(8,9)
-pair_nums= range(4)
+pair_nums= range(5,6)
 
 for pair_num in pair_nums:
     print('pair num:'+str(pair_num))
@@ -27,61 +27,52 @@ for pair_num in pair_nums:
                 
         del remove_numbers
         # get all base patterns
-        pair_bases_num = np.array(list(itertools.combinations(numbers,pair_num)))
+        pair_bases_num = np.array(list(itertools.combinations(numbers,pair_num)),dtype=np.uint32)
+        #pair_bases_num = list(itertools.combinations(numbers,pair_num))
 
         del numbers
-        # transform
+        # print and save txt
+        f = open('I_seq_'+str(pair_num)+'pair_dig'+str(dig).zfill(3)+'.txt','w')
+        # write header
+        f.write('base1')
+        for i in range(1,pair_num):
+            f.write(',base'+str(i+1))
+        f.write('\n')
+        print('calc data length:'+str(pair_bases_num))
         pair_bases_sig = []
-        for pair_base in pair_bases_num:
+        for i,pair_base in enumerate(pair_bases_num):
+            print("\r"+str(i),end="")
+            # transform
             pair_bases_sig_temp = []
             for base in pair_base:
                 seq = '{:b}'.format(base).zfill(dig)
-                base_temp = np.zeros(dig)
+                base_temp = np.zeros(dig,dtype=np.uint8)
                 for i,bit in enumerate(seq):
-                    base_temp[i]=int(bit)
+                    base_temp[i]=bit
 
                 pair_bases_sig_temp.append(base_temp)
 
-            pair_bases_sig.append(np.array(pair_bases_sig_temp))
-        
-        pair_bases_sig = np.array(pair_bases_sig)
-
-        del pair_bases_num,pair_bases_sig_temp
-        # calc correlation
-        I_seq = []
-        for pair_base in pair_bases_sig:
-            cor_signal = np.sum(pair_base,axis=0)
+            pair_bases_sig = np.array(pair_bases_sig_temp,dtype=np.uint8)
+            # calc correlation
+            cor_signal = np.sum(pair_bases_sig,axis=0)
             cor_signal = np.concatenate([cor_signal,cor_signal])
             
             auto_cor_flag = np.zeros(pair_num)
             cross_cor_flag = np.zeros(pair_num)
-            for i,a_base in enumerate(pair_base):
-                cross_cor_sig = becmm.any_base_analysis_1D(cor_signal, a_base)
+
+            for i,a_base in enumerate(pair_bases_sig):
+                cross_cor_sig = becmm.any_base_analysis4I_seq(cor_signal, a_base)
            
                 auto_cor_flag[i] = cross_cor_sig[0] == 1
                 cross_cor_flag[i] = np.sum(cross_cor_sig[1:]) < 0.001
         
             if np.sum(auto_cor_flag) == pair_num and np.sum(cross_cor_flag) == pair_num:
-                I_seq.append(pair_base)
+                f.write(str(pair_bases_sig[0]))
+                for a_base in pair_bases_sig:
+                    if str(a_base) == str(pair_bases_sig[0]):
+                        continue
+                    f.write(','+str(a_base))
+                f.write('\n')
         
-        del pair_bases_sig,auto_cor_flag,cross_cor_flag
-        # print and save txt
-        f = open('I_seq_'+str(pair_num)+'pair_dig'+str(dig).zfill(3)+'.txt','w')
-        f.write('base1')
-        # write header
-        for i in range(1,pair_num):
-            f.write(',base'+str(i+1))
-        f.write('\n')
-        # wite data
-        write_string = ''
-        for seq in I_seq:
-            for data in seq:
-                write_string += str(data)+','
-            write_string = write_string[:-1]+'\n'
-        
-        f.write(write_string)
-
-        del write_string        
-        f.close()
 
         
