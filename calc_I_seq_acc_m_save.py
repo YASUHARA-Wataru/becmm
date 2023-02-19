@@ -9,8 +9,8 @@ import base_extract_correlation_minimum_method as becmm
 import numpy as np
 import itertools
 
-digs = range(8,9)
-pair_nums= range(4,5)
+digs = range(6,7)
+pair_nums= range(2,3)
 
 for pair_num in pair_nums:
     print('pair num:'+str(pair_num))
@@ -19,18 +19,15 @@ for pair_num in pair_nums:
         max_number = np.power(2,dig)
         numbers = np.arange(3,max_number-1)
         
-        del max_number
         # remove no pattern
         remove_numbers = np.power(2,range(2,dig))
         for remove_number in remove_numbers:
             numbers = np.delete(numbers, numbers==remove_number)
                 
-        del remove_numbers
         # get all base patterns
         pair_bases_num = list(itertools.combinations(numbers,pair_num))
         #pair_bases_num = list(itertools.combinations(numbers,pair_num))
 
-        del numbers
         # print and save txt
         f = open('I_seq_'+str(pair_num)+'pair_dig'+str(dig).zfill(3)+'.txt','w')
         # write header

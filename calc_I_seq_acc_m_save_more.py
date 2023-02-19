@@ -18,13 +18,11 @@ for pair_num in pair_nums:
         max_number = np.power(2,dig)
         numbers = np.arange(3,max_number-1)
         
-        del max_number
         # remove no pattern
         remove_numbers = np.power(2,range(2,dig))
         for remove_number in remove_numbers:
             numbers = np.delete(numbers, numbers==remove_number)
                 
-        del remove_numbers
         # save txt
         f = open('I_seq_'+str(pair_num)+'pair_dig'+str(dig).zfill(3)+'.txt','w')
         # write header
@@ -34,8 +32,10 @@ for pair_num in pair_nums:
         f.write('\n')
         numbers_num = numbers.shape[0]
         bit_array = np.zeros(numbers_num)
+        i = 0
         while np.sum(bit_array)!=numbers_num:
-            #print(bit_array)
+            cnt = int('0b'+str(bit_array.astype('i'))[-17:-1].replace(' ',''),2)
+            print("\r"+str(cnt),end="")
             if np.sum(bit_array) == pair_num:
                 pair_base = numbers[np.array(bit_array,dtype=bool)]
                 #print(pair_base)
