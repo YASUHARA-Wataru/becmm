@@ -8,7 +8,7 @@ MIT License
 import base_extract_correlation_minimum_method as becmm
 import numpy as np
 
-digs = range(6,7)
+digs = range(3,4)
 pair_nums= range(2,3)
 
 for pair_num in pair_nums:
@@ -34,11 +34,14 @@ for pair_num in pair_nums:
         bit_array = np.zeros(numbers_num)
         i = 0
         while np.sum(bit_array)!=numbers_num:
-            cnt = int('0b'+str(bit_array.astype('i'))[-17:-1].replace(' ',''),2)
-            print("\r"+str(cnt),end="")
+            # maybe do not update display for lazy evaluation
+            #cnt = int('0b'+str(bit_array.astype('i'))[-17:-1].replace(' ',''),2)
+            #print("\r"+str(cnt),end="")
+            print(str(bit_array)[1:-1])
             if np.sum(bit_array) == pair_num:
+                print(str(bit_array)[1:-1])
                 pair_base = numbers[np.array(bit_array,dtype=bool)]
-                #print(pair_base)
+                print(pair_base)
                 # transform
                 pair_bases_sig_temp = []
                 for base in pair_base:
