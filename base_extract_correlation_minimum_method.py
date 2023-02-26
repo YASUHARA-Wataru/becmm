@@ -667,8 +667,6 @@ def any_base_analysis_2D_with_negative_add_min(data,base):
 
 def encrypt_bainary_mod(main_key,sub_key,binary_data):
     """
-    
-
     Parameters
     ----------
     main_key : TYPE
@@ -739,6 +737,132 @@ def encrypt_bainary_mod(main_key,sub_key,binary_data):
     return mod_data
 
 def encrypt_bainary_demod(main_key,sub_key,mod_data):
+    
+    main_key = np.array(main_key)
+    sub_key = np.array(sub_key)
+    mod_data = np.array(mod_data)
+    
+    if main_key.flatten().shape[0] != len(list(main_key)) :
+        raise Exception('main_key is not 1D array.')
+
+    if np.min(main_key) < 0:
+        raise Exception('main_key can\'t contain negative values.')
+
+    if np.min(main_key) < 0:
+        raise Exception('base can\'t contain negative values.')
+
+    if np.min(np.abs(main_key)[np.abs(main_key) > 0]) != 1:
+        raise Exception('base not zero value absolute min must be 1.')
+        
+    if np.sum(np.abs(main_key) > 0) < 2:
+        raise Exception('base must contain 2 values which is not 0.')
+
+    if sub_key.flatten().shape[0] != len(list(sub_key)) :
+        raise Exception('main_key is not 1D array.')
+
+    if np.min(sub_key) < 0:
+        raise Exception('main_key can\'t contain negative values.')
+
+    if np.min(sub_key) < 0:
+        raise Exception('base can\'t contain negative values.')
+
+    if np.min(np.abs(sub_key)[np.abs(sub_key) > 0]) != 1:
+        raise Exception('base not zero value absolute min must be 1.')
+        
+    if np.sum(np.abs(sub_key) > 0) < 2:
+        raise Exception('base must contain 2 values which is not 0.')
+
+    if main_key.shape[0] != sub_key.shape[0]:
+        raise Exception('main key and sub key must be same length.')
+    
+    demod_data = np.zeros(int(mod_data.shape[0]/main_key.shape[0]),dtype=bool)
+    for i in range(0,int(mod_data.shape[0]/main_key.shape[0])):
+        cut_data = mod_data[i*main_key.shape[0]:(i+1)*main_key.shape[0]]
+        main_ex_index = main_key == True
+        sub_ex_index = sub_key == True
+        main_bit =  cut_data[main_ex_index].flatten().all()
+        sub_bit = cut_data[sub_ex_index].flatten().all()
+
+        if main_bit and (not sub_bit):
+            demod_data[i] = True
+        else:
+            demod_data[i] = False
+            
+    return demod_data
+
+
+def encrypt_bainary_mod_add_rand_bit(main_key,sub_key,binary_data):
+    """
+    Parameters
+    ----------
+    main_key : TYPE
+        DESCRIPTION.
+    sub_key : TYPE
+        DESCRIPTION.
+    binary_data : TYPE
+        DESCRIPTION.
+
+    Raises
+    ------
+    Exception
+        DESCRIPTION.
+
+    Returns
+    -------
+    mod_data : TYPE
+        DESCRIPTION.
+
+    """
+    
+    main_key = np.array(main_key,dtype=bool)
+    sub_key = np.array(sub_key,dtype=bool)
+    binary_data = np.array(binary_data,dtype=bool)
+    
+    if main_key.flatten().shape[0] != len(list(main_key)) :
+        raise Exception('main_key is not 1D array.')
+
+    if np.min(main_key) < 0:
+        raise Exception('main_key can\'t contain negative values.')
+
+    if np.min(main_key) < 0:
+        raise Exception('base can\'t contain negative values.')
+
+    if np.min(np.abs(main_key)[np.abs(main_key) > 0]) != 1:
+        raise Exception('base not zero value absolute min must be 1.')
+        
+    if np.sum(np.abs(main_key) > 0) < 2:
+        raise Exception('base must contain 2 values which is not 0.')
+
+    if sub_key.flatten().shape[0] != len(list(sub_key)) :
+        raise Exception('main_key is not 1D array.')
+
+    if np.min(sub_key) < 0:
+        raise Exception('main_key can\'t contain negative values.')
+
+    if np.min(sub_key) < 0:
+        raise Exception('base can\'t contain negative values.')
+
+    if np.min(np.abs(sub_key)[np.abs(sub_key) > 0]) != 1:
+        raise Exception('base not zero value absolute min must be 1.')
+        
+    if np.sum(np.abs(sub_key) > 0) < 2:
+        raise Exception('base must contain 2 values which is not 0.')
+
+    if main_key.shape[0] != sub_key.shape[0]:
+        raise Exception('main key and sub key must be same length.')
+    
+    mod_data = np.zeros(binary_data.shape[0]*main_key.shape[0],dtype=bool)
+    for i,bit in enumerate(binary_data):
+        if bit == 1:
+            mod_data[i*main_key.shape[0]:(i+1)*main_key.shape[0]] = main_key
+        elif bit == 0:
+            mod_data[i*main_key.shape[0]:(i+1)*main_key.shape[0]] = sub_key
+        else:
+            raise Exception('data is not binary.')
+    
+    return mod_data
+
+def encrypt_bainary_mod_add_rand_bit(main_key,sub_key,mod_data):
     
     main_key = np.array(main_key)
     sub_key = np.array(sub_key)

@@ -9,6 +9,8 @@ MIT License
 
 import numpy as np
 import base_extract_correlation_minimum_method as becmm
+import glob
+import os
 
 # encrypt test
 encrypt_str = 'Hellow World. becmm encrypt test.'
@@ -26,8 +28,8 @@ for i,bit in enumerate(bin_str):
     elif bit == '0':
         str_bin_array[i] = False
 
-main_key = [1,1,1,1,0,0,1,0]
-sub_key = [1,1,1,1,1,0,0,0]
+main_key = [0,0,0,1,1,1]
+sub_key = [0,0,0,1,0,1]
 
 mod_data = becmm.encrypt_bainary_mod(main_key, sub_key, str_bin_array)
 
@@ -42,36 +44,32 @@ for bit in demod_data:
 
 demod_sting = ''
 for i in range(0,int(len(de_bit_string)/7)):
-    conbert_string = de_bit_string[i*7:(i+1)*7]
+    convert_string = de_bit_string[i*7:(i+1)*7]
     #print(conbert_string)
-    value = int(conbert_string,2)
+    value = int(convert_string,2)
     demod_sting += chr(value)
     
 print('demod string: ' + demod_sting)
 
 output_f = open('encrypt_research.txt','w')
 
-digs = [6,7,8,9,10]
-#digs = [8]
-
 print(mod_data)
 
-for dig in digs:
-    print('dig: ' + str(dig))
-    f = open('ND_seq\\ND_seq_2pair_dig'+str(dig).zfill(3)+'.txt','r')
-    print(mod_data)
-    output_f.write('dig: ' + str(dig) + '\n')
+for path in glob.glob('encrypt_seq\\*.txt'):
+    file_name = os.path.basename(path)
+    dig = int(file_name[20:23])
+    base_str = file_name[24:24+dig]
+    de_main_key = np.zeros(dig)
+    for i,bit in enumerate(base_str):
+        de_main_key[i] = int(bit)
     
-    for line in f:
-        if line[:2] == '# ':
-            continue
-
+    input_f = open(path,'r')
+    encrypt_I_seq = []
+    for line in input_f:
         data = line[:-1].split(',')
-        de_main_key = np.array(data[:dig]).astype('i')
-        de_sub_key = np.array(data[dig:]).astype('i')
-
-        print(de_main_key)
-        print(de_sub_key)
+        de_sub_key = np.zeros(dig)
+        for i,bit in enumerate(data):
+            de_sub_key[i] = int(bit)
         
         output_f.write('de main key: ' + str(de_main_key) + ' de sub key:' + str(de_sub_key)+'\n')
 

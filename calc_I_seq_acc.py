@@ -47,7 +47,6 @@ for pair_num in pair_nums:
         
         pair_bases_sig = np.array(pair_bases_sig,dtype=np.uint8)
 
-        del pair_bases_num,pair_bases_sig_temp
         # calc correlation
         I_seq = []
         for pair_base in pair_bases_sig:
@@ -82,7 +81,6 @@ for pair_num in pair_nums:
         
         f.write(write_string)
 
-        del write_string        
         f.close()
 
         

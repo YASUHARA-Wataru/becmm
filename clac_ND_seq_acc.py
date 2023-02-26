@@ -9,7 +9,7 @@ import base_extract_correlation_minimum_method as becmm
 import numpy as np
 import itertools
 
-digs = range(3,17)
+digs = range(12,17)
 pair_num = 2
 
 print('pair num:'+str(pair_num))
@@ -46,7 +46,7 @@ for dig in digs:
     del pair_bases_num,pair_bases_sig_temp
     
     # calc correlation
-    I_seq = []
+    ND_seq = []
     for pair_base in pair_bases_sig:
         cor_signal = np.sum(pair_base,axis=0)
         cor_signal = np.concatenate([cor_signal,cor_signal])
@@ -60,7 +60,7 @@ for dig in digs:
             cross_cor_flag[i] = np.sum(cross_cor_sig[1:]) < 0.001
     
         if np.sum(auto_cor_flag) == pair_num and np.sum(cross_cor_flag) == pair_num:
-            I_seq.append(pair_base)
+            ND_seq.append(pair_base)
     
     
     # print and save txt
@@ -68,7 +68,7 @@ for dig in digs:
     f.write('# digit='+str(dig)+'\n')
     # wite data
     write_string = ''
-    for seq in I_seq:
+    for seq in ND_seq:
         for data in seq:
             for bit in data:
                 write_string += str(int(bit))+','
