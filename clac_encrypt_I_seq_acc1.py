@@ -13,7 +13,7 @@ import os
 I_path = glob.glob('encrypt_I_seq\\*.txt')
 I_path = [os.path.basename(x)[:-6] for x in I_path]
 
-for path in glob.glob('encrypt_seq\\*.txt'):
+for path in glob.glob('encrypt_seq_c1\\*.txt'):
     
     file_name = os.path.basename(path)
 
@@ -84,17 +84,17 @@ for path in glob.glob('encrypt_seq\\*.txt'):
             encrypt_I_seq.append(base2)
 
 
-    #if len(encrypt_I_seq) != 0:
-    output_f = open('encrypt_I_seq\\'+file_name[:-4]+'_I.txt','w')
-    for data in encrypt_I_seq:
-        write_str = ''
-        
-        for bit in data:
-            write_str+=str(int(bit)) + ','
-
-        write_str = write_str[:-1] + '\n'
-        output_f.write(write_str)
+    if len(encrypt_I_seq) != 0:
+        output_f = open('encrypt_I_seq\\'+file_name[:-4]+'_I.txt','w')
+        for data in encrypt_I_seq:
+            write_str = ''
+            
+            for bit in data:
+                write_str+=str(int(bit)) + ','
     
-    output_f.close()
+            write_str = write_str[:-1] + '\n'
+            output_f.write(write_str)
+        
+        output_f.close()
     input_f.close()
                             
