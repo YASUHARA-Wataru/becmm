@@ -30,7 +30,7 @@ def freq_analysis_1D(data):
     if data.flatten().shape[0] != len(list(data)):
         raise Exception('data is not 1D array.')
 
-    if np.min(data) > 0:
+    if np.min(data) >= 0:
 
         data_num = data.shape[0]
         max_freqs = int(data_num/2)+1
